@@ -4,10 +4,42 @@
 <h1>Home</h1>
 <p><%= homeContentEjs %> </p>
 
+<table class="table">
+    <tbody>
+        <tr>
+            <button class="btn btnRightMargin"><a href="/compose">New post</a></button>
+            <form action="/" method="post">
+
+                <button class="btn btnDelete" type="submit" name="btnDelete">Delete all</button>
+
+            </form>
+        </tr>
+
+    </tbody>
+
+</table>
+
+
+
+
 <% postsEjs.forEach( post => { %>
-    
-    <h1><%= post.title %></h1>
-    <p><%= post.content %></p>
+
+<table class="table">
+    <tbody>
+        <tr>
+            <div>
+                <h1 class="floatLeft"><a href="posts/<%= post.title %>"><%= post.title %></a></h1>
+            </div>
+            <div class="padding floatRight">
+                <h6 >post #<%= post.id %> <%= dateEjs %></h6>
+            </div>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<p class="textTruncate"><%= post.content %></p>
 
 <% }); %>
 

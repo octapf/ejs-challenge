@@ -28,10 +28,15 @@ app.use(express.static("public"));
 
 app.get("/", (req, res) => {
 
+  let newDate = new Date();
+  let postDate = "Date: " + newDate.getDate() + "/" + (newDate.getMonth() + 1) + "/" + newDate.getFullYear() + " - " + newDate.getHours() + ":" + newDate.getMinutes();
+  
   res.render("home", {
     homeContentEjs: homeStartingContent,
-    postsEjs: posts
+    postsEjs: posts,
+    dateEjs: postDate 
   });
+
 
 
 });
@@ -54,22 +59,28 @@ app.get("/compose", (req, res) => {
 
 app.get("/posts/:postid", (req, res) => {
 
-  posts.forEach( post => {
+  let postID = _.lowerCase(req.params.postid);
 
-    let postID = _.lowerCase(req.params.postid);
+  posts.forEach(post => {
+
+
     let postTitle = _.lowerCase(post.title);
+    let postContent = _.lowerCase(post.content);
 
-    console.log("This is the Lodash postID: " + postID );
-    
-    console.log("This is the Lodash postTitle: " + postTitle );
+    // console.log("This is the Lodash postID: " + postID );
+
+    // console.log("This is the Lodash postTitle: " + postTitle );
 
     if (postID === postTitle) {
-      console.log( "Match found!" );
-    } else {
-      console.log("Not a match!");
+      res.render("post", {
+        postTitleEjs: _.capitalize(postTitle),
+        postContentEjs: postContent
+      });
     }
 
   });
+
+
 
 });
 
@@ -77,7 +88,8 @@ app.post("/compose", (req, res) => {
 
   const post = {
     title: req.body.textTitle,
-    content: req.body.textPost
+    content: req.body.textPost,
+    id: posts.length + 1
   };
 
   posts.push(post);
@@ -86,6 +98,14 @@ app.post("/compose", (req, res) => {
 
 });
 
+app.post("/", (req, res) => {
+
+  // detele all posts
+  posts = [];
+
+  res.redirect("/");
+
+})
 
 
 app.listen(3000, function () {
