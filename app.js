@@ -3,6 +3,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const mongoose = require("mongoose");
+
+//connect to database
+mongoose.connect("mongodb+srv://octapff:weddewtr3_ASD@cluster0.7usqj.mongodb.net/blogDB?retryWrites=true&w=majority", {useNewUrlParser: true});
 
 //Lodash
 const _ = require('lodash');
@@ -16,6 +20,22 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 
 const app = express();
 
+//Create Schemas
+const PostSchema = new mongoose.Schema({
+  title:{
+    type: String,
+    required: true
+  },
+  content:{
+    type: String,
+    required: true
+  },
+})
+
+//Compile schemas into a model
+const Post = mongoose.model("Post", PostSchema);
+
+//DELETE//DELETE//DELETE//DELETE
 let posts = [];
 
 app.set('view engine', 'ejs');
@@ -33,6 +53,7 @@ app.get("/", (req, res) => {
   
   res.render("home", {
     homeContentEjs: homeStartingContent,
+    //DELETE//DELETE//DELETE//DELETE
     postsEjs: posts,
     dateEjs: postDate 
   });
@@ -61,6 +82,7 @@ app.get("/posts/:postid", (req, res) => {
 
   let postID = _.lowerCase(req.params.postid);
 
+  //DELETE//DELETE//DELETE//DELETE
   posts.forEach(post => {
 
 
@@ -92,6 +114,7 @@ app.post("/compose", (req, res) => {
     id: posts.length + 1
   };
 
+  //DELETE//DELETE//DELETE//DELETE
   posts.push(post);
 
   res.redirect("/");
@@ -100,6 +123,7 @@ app.post("/compose", (req, res) => {
 
 app.post("/", (req, res) => {
 
+  //DELETE//DELETE//DELETE//DELETE
   // detele all posts
   posts = [];
 
